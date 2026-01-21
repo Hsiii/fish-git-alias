@@ -18,7 +18,8 @@ if status is-interactive
     abbr -a gb 'git for-each-ref --sort=-committerdate --format="%(refname:short) | %(committerdate:relative) | %(authorname)" refs/heads'
     abbr -a gd 'git branch -d' # Safe delete
     abbr -a gD 'git branch -D' # Force delete
-    abbr -a gc "git fetch -p && git for-each-ref --format '%(refname:short) %(upstream:track)' refs/heads | awk '\$2 == \"[gone]\" {print \$1}' | xargs -I % git branch -d %"
+    # Cleans up local branches that are "gone" on remote
+    abbr -a gc 'git fetch -p && git for-each-ref --format "%(refname:short) %(upstream:track)" refs/heads | grep -F "[gone]" | cut -d " " -f 1 | xargs -I % git branch -d %'
     abbr -a gst 'git status'
     
     # Utility abbreviations
