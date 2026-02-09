@@ -21,7 +21,7 @@ if status is-interactive
     # Cleans up local branches that are "gone" on remote
     abbr -a gc 'git fetch -p && git for-each-ref --format "%(refname:short) %(upstream:track)" refs/heads | grep -F "[gone]" | cut -d " " -f 1 | xargs -I % git branch -D %'
     abbr -a gst 'git status'
-    abbr -a pr 'gh pr create --fill --web'
+    abbr -a pr 'gh pr create --title (git branch --show-current | sed "s|/|: |g") --web'
     
     # Utility abbreviations
     abbr -a cf 'code ~/.config/fish/config.fish'
