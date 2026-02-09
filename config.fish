@@ -24,7 +24,7 @@ if status is-interactive
     abbr -a pr 'gh pr create --fill --web'
     
     # Utility abbreviations
-    abbr -a cf '$EDITOR ~/.config/fish/config.fish'
+    abbr -a cf 'code ~/.config/fish/config.fish'
 end
 
 # PATH management
@@ -37,7 +37,7 @@ fish_add_path /Users/hsi/.antigravity/antigravity/bin
 # Node Path (Note: Consider using a fish-nvm plugin for better version management)
 fish_add_path /Users/hsi/.nvm/versions/node/v20.17.0/bin
 
-# Ensure EDITOR is set for 'cf' abbreviation
-if not set -q EDITOR
-    set -gx EDITOR vim
-end
+
+# bun
+set --export BUN_INSTALL "$HOME/.bun"
+set --export PATH $BUN_INSTALL/bin $PATH
