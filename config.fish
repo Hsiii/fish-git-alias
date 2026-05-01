@@ -67,6 +67,9 @@ if status is-interactive
     # Remove local branches whose upstream branches no longer exist on the remote.
     abbr -a gc 'git fetch -p && git for-each-ref --format "%(refname:short) %(upstream:track)" refs/heads | grep -F "[gone]" | cut -d " " -f 1 | xargs -I % git branch -D %'
 
+    # Cherry-pick one or more commits onto the current branch.
+    abbr -a gcp 'git cherry-pick'
+
     # Show repository status.
     abbr -a gst 'git status'
 
