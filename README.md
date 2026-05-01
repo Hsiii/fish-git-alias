@@ -62,6 +62,27 @@ source /Users/hsi/Documents/Projects/Archive/fish-git-alias/config.fish
 
 To pick up new changes locally.
 
+## Notable commands
+
+- `gm`: switch to the remote default branch and pull
+- `gr`: fetch and rebase onto the remote default branch
+- `gz`: reset commits with an optional mode and count
+
+`gz` examples:
+
+```fish
+gz
+gz 2
+gz --hard
+gz --hard 3
+```
+
+Behavior:
+
+- default is `git reset --soft HEAD~1`
+- pass a number to reset more commits
+- pass `--hard` to discard working tree and index changes as part of the reset
+
 ## Why not source from GitHub
 
 Sourcing a remote raw file on shell startup is possible, but it is a worse default because it adds:

@@ -27,8 +27,33 @@ if status is-interactive
     # Force-push safely with lease protection.
     abbr -a gf 'git push --force-with-lease'
 
-    # Undo the last commit while keeping the changes staged.
-    abbr -a gz 'git reset --soft HEAD~1'
+    # Reset the current branch by commit count, defaulting to a soft reset of one commit.
+    function gz
+        argparse 'h/hard' 's/soft' -- $argv
+        or return
+
+        if set -q _flag_hard; and set -q _flag_soft
+            echo 'gz: choose either --hard or --soft' >&2
+            return 1
+        end
+
+        set -l reset_mode soft
+        if set -q _flag_hard
+            set reset_mode hard
+        end
+
+        set -l count 1
+        if test (count $argv) -gt 0
+            set count $argv[1]
+        end
+
+        if not string match -qr '^[1-9][0-9]*$' -- $count
+            echo 'gz: commit count must be a positive integer' >&2
+            return 1
+        end
+
+        git reset --$reset_mode HEAD~$count
+    end
 
     # List local branches sorted by most recent commit.
     abbr -a gb 'git for-each-ref --sort=-committerdate --format="%(refname:short) | %(committerdate:relative) | %(authorname)" refs/heads'
