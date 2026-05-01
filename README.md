@@ -66,8 +66,16 @@ or open a new shell session.
 - `gb`: list local branches sorted by most recent commit
 - `gd`: delete a merged local branch
 - `gD`: force-delete a local branch
-- `gc`: prune remote-tracking refs and delete local branches whose upstream is gone
+- `gc`: prune remote-tracking refs and delete gone branches only when already merged into the default branch
 - `gst`: show `git status`
+
+`gc` behavior:
+
+- runs `git fetch -p` first
+- finds local branches whose upstream is marked `[gone]`
+- deletes merged branches with `git branch -d`
+- skips unmerged branches unless you pass `--force`
+- never deletes the current branch
 
 ### Reset helper
 

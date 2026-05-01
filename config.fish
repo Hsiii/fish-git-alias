@@ -64,8 +64,50 @@ if status is-interactive
     # Force-delete a local branch.
     abbr -a gD 'git branch -D'
 
-    # Remove local branches whose upstream branches no longer exist on the remote.
-    abbr -a gc 'git fetch -p && git for-each-ref --format "%(refname:short) %(upstream:track)" refs/heads | grep -F "[gone]" | cut -d " " -f 1 | xargs -I % git branch -D %'
+    # Remove local branches whose upstream is gone, deleting unmerged branches only with --force.
+    function gc
+        argparse 'f/force' -- $argv
+        or return
+
+        git fetch -p
+        or return
+
+        set -l default_branch (git_default_branch)
+        if test -z "$default_branch"
+            echo 'gc: could not resolve the default branch from origin/HEAD' >&2
+            return 1
+        end
+
+        set -l current_branch (git branch --show-current)
+        set -l gone_branches (
+            git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads |
+            string match -r '.+ \[gone\]$' |
+            string replace -r ' \[gone\]$' ''
+        )
+
+        if test (count $gone_branches) -eq 0
+            echo 'gc: no local branches with gone upstreams'
+            return 0
+        end
+
+        for branch in $gone_branches
+            if test "$branch" = "$current_branch"
+                echo "gc: skipping current branch $branch"
+                continue
+            end
+
+            if git merge-base --is-ancestor $branch $default_branch
+                git branch -d $branch
+                continue
+            end
+
+            if set -q _flag_force
+                git branch -D $branch
+            else
+                echo "gc: skipping unmerged gone branch $branch (use --force to delete)" >&2
+            end
+        end
+    end
 
     # Cherry-pick one or more commits onto the current branch.
     abbr -a gcp 'git cherry-pick'
