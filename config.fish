@@ -26,18 +26,3 @@ if status is-interactive
     # Utility abbreviations
     abbr -a cf 'code ~/.config/fish/config.fish'
 end
-
-# PATH management
-# fish_add_path is smarter than set -gx PATH
-fish_add_path /opt/homebrew/bin
-fish_add_path /usr/local/bin
-fish_add_path ~/.local/bin
-fish_add_path /Users/hsi/.antigravity/antigravity/bin
-
-# Node Path (Note: Consider using a fish-nvm plugin for better version management)
-fish_add_path /Users/hsi/.nvm/versions/node/v20.17.0/bin
-
-
-# bun
-set --export BUN_INSTALL "$HOME/.bun"
-set --export PATH $BUN_INSTALL/bin $PATH
