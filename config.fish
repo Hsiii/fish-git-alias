@@ -4,8 +4,13 @@ if status is-interactive
         # Silence the greeting.
     end
 
+    # Resolve the remote default branch name from origin/HEAD.
+    function git_default_branch
+        git symbolic-ref refs/remotes/origin/HEAD | string replace 'refs/remotes/origin/' ''
+    end
+
     # Switch to the remote default branch and pull the latest changes.
-    abbr -a gm 'git switch (git symbolic-ref refs/remotes/origin/HEAD | sed "s@^refs/remotes/origin/@@") && git pull'
+    abbr -a gm 'git switch (git_default_branch) && git pull'
 
     # Switch to an existing branch.
     abbr -a gw 'git switch'
@@ -17,7 +22,7 @@ if status is-interactive
     abbr -a gwz 'git switch -'
 
     # Fetch remote changes and rebase the current branch onto the remote default branch.
-    abbr -a gr 'git fetch && git rebase (git symbolic-ref refs/remotes/origin/HEAD | sed "s@^refs/remotes/origin/@@")'
+    abbr -a gr 'git fetch && git rebase (git_default_branch)'
 
     # Force-push safely with lease protection.
     abbr -a gf 'git push --force-with-lease'
