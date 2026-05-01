@@ -1,29 +1,19 @@
 # fish-git-alias
 
-Shared Fish abbreviations for Git workflows.
+`fish-git-alias` is a small shared Fish config that adds Git-focused abbreviations and helper functions for interactive shell use.
 
-## What belongs here
+It is intended for people who want a lightweight personal Git workflow layer without mixing machine-specific environment setup into the same file.
 
-This repo is the shared layer.
-Keep only reusable interactive shell behavior here, such as:
+## What this repo contains
 
-- `abbr` definitions
-- interactive shell helpers
-- prompt/session behavior that should be shared across machines
+The repo currently provides:
 
-Do not keep machine-specific settings here, such as:
+- a quiet Fish startup by overriding `fish_greeting`
+- `git_default_branch`, a helper that resolves `origin/HEAD`
+- Git abbreviations for switching branches, rebasing, force-pushing, branch cleanup, PR creation, and status checks
+- `gz`, a reset helper with input validation and `--soft` / `--hard` modes
 
-- `PATH` entries
-- `BUN_INSTALL`
-- editor paths
-- per-machine tool locations
-
-Those belong in your real local Fish config at `~/.config/fish/config.fish`.
-
-## Why the shared config is interactive-only
-
-Fish loads `config.fish` for both interactive and non-interactive sessions.
-This repo wraps its abbreviations in:
+Everything is wrapped in:
 
 ```fish
 if status is-interactive
@@ -31,44 +21,59 @@ if status is-interactive
 end
 ```
 
-That keeps prompt-only features out of scripts and non-interactive commands like `fish -c '...'`.
+That keeps these shortcuts out of non-interactive Fish runs such as scripts and `fish -c`.
 
-## Local setup
+## Install
 
-Add this to your real Fish config:
-
-```fish
-source /Users/hsi/Documents/Projects/Archive/fish-git-alias/config.fish
-```
-
-Then keep your local-only environment setup below it, for example:
-
-```fish
-fish_add_path /opt/homebrew/bin
-fish_add_path /usr/local/bin
-fish_add_path ~/.local/bin
-
-set --export BUN_INSTALL "$HOME/.bun"
-fish_add_path $BUN_INSTALL/bin
-```
-
-## Updating
-
-Edit the shared aliases in this repo, then open a new Fish session or run:
+Clone the repo somewhere stable, then source `config.fish` from your real Fish config:
 
 ```fish
 source /Users/hsi/Documents/Projects/Archive/fish-git-alias/config.fish
 ```
 
-To pick up new changes locally.
+Put machine-specific settings in `~/.config/fish/config.fish`, not in this repo. That includes things like:
 
-## Notable commands
+- `PATH` changes
+- tool install locations
+- editor paths
+- local environment variables
+
+After editing the shared config, reload it with:
+
+```fish
+source /Users/hsi/Documents/Projects/Archive/fish-git-alias/config.fish
+```
+
+or open a new shell session.
+
+## Command Reference
+
+### Branching and syncing
 
 - `gm`: switch to the remote default branch and pull
-- `gr`: fetch and rebase onto the remote default branch
-- `gz`: reset commits with an optional mode and count
+- `gw`: switch to an existing branch
+- `gwc`: create and switch to a new branch
+- `gwz`: switch back to the previous branch
+- `gr`: fetch and rebase the current branch onto the remote default branch
 
-`gz` examples:
+### Pushing and pull requests
+
+- `gf`: `git push --force-with-lease`
+- `pr`: open GitHub PR creation in the browser with a branch-derived title
+
+### Branch cleanup and inspection
+
+- `gb`: list local branches sorted by most recent commit
+- `gd`: delete a merged local branch
+- `gD`: force-delete a local branch
+- `gc`: prune remote-tracking refs and delete local branches whose upstream is gone
+- `gst`: show `git status`
+
+### Reset helper
+
+`gz` resets `HEAD` by commit count and defaults to a soft reset of one commit.
+
+Examples:
 
 ```fish
 gz
@@ -79,17 +84,16 @@ gz --hard 3
 
 Behavior:
 
-- default is `git reset --soft HEAD~1`
-- pass a number to reset more commits
-- pass `--hard` to discard working tree and index changes as part of the reset
+- default: `git reset --soft HEAD~1`
+- `gz 3`: reset three commits
+- `gz --hard 2`: hard-reset two commits
+- invalid counts and conflicting flags are rejected
 
-## Why not source from GitHub
+## Why keep this local
 
-Sourcing a remote raw file on shell startup is possible, but it is a worse default because it adds:
+This repo is meant to be cloned and sourced locally instead of fetched from a remote URL on shell startup. That avoids:
 
 - startup latency
-- a network dependency
-- remote code execution on every shell launch
-- failure modes when GitHub is unavailable
-
-The local clone approach is faster, safer, and more predictable.
+- network dependency during shell launch
+- remote code execution on every new session
+- breakage when GitHub is unavailable
