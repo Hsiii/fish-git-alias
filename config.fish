@@ -21,8 +21,8 @@ if status is-interactive
     # Switch back to the previous branch.
     abbr -a gwz 'git switch -'
 
-    # Fetch remote changes and rebase the current branch onto the remote default branch.
-    abbr -a gr 'git fetch && git rebase (git_default_branch)'
+    # Fetch remote changes and rebase the current branch onto origin's default branch.
+    abbr -a gr 'git fetch && git rebase origin/(git_default_branch)'
 
     # Force-push safely with lease protection.
     abbr -a gf 'git push --force-with-lease'

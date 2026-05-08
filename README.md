@@ -20,7 +20,7 @@ source /Some-Directory/fish-git-alias/config.fish
 - `gw`: switch to an existing branch
 - `gwc`: create and switch to a new branch
 - `gwz`: switch back to the previous branch
-- `gr`: fetch and rebase the current branch onto the remote default branch
+- `gr`: fetch and rebase the current branch onto `origin`'s default branch
 
 ### Pushing and pull requests
 
