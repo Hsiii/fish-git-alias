@@ -24,6 +24,9 @@ if status is-interactive
     # Fetch remote changes and rebase the current branch onto origin's default branch.
     abbr -a gr 'git fetch && git rebase origin/(git_default_branch)'
 
+    # Fetch from upstream and rebase the current branch onto upstream.
+    abbr -a gru 'git fetch upstream && git rebase upstream'
+
     # Force-push safely with lease protection.
     abbr -a gf 'git push --force-with-lease'
 
