@@ -30,6 +30,9 @@ if status is-interactive
     # Force-push safely with lease protection.
     abbr -a gf 'git push --force-with-lease'
 
+    # Push the current branch to its configured remote.
+    abbr -a gp 'git push'
+
     # Reset the current branch by commit count, defaulting to a soft reset of one commit.
     function gz
         argparse 'h/hard' 's/soft' -- $argv

@@ -25,6 +25,7 @@ source /Some-Directory/fish-git-alias/config.fish
 
 ### Pushing and pull requests
 
+- `gp`: `git push`
 - `gf`: `git push --force-with-lease`
 - `pr`: open GitHub PR creation in the browser with a branch-derived title
 
