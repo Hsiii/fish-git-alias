@@ -22,18 +22,21 @@ source /Some-Directory/fish-git-alias/config.fish
 - `gwz`: switch back to the previous branch
 - `gr`: fetch and rebase the current branch onto `origin`'s default branch
 - `gru`: fetch from `upstream` and rebase the current branch onto `upstream`
+- `gl`: `git pull`
+- `glr`: `git pull --rebase`
 
 ### Pushing and pull requests
 
 - `gp`: `git push`
-- `gf`: `git push --force-with-lease`
+- `gpu`: push the current branch and set `origin` upstream
+- `gp!`: `git push --force-with-lease`
 - `pr`: open GitHub PR creation in the browser with a branch-derived title
 
 ### Branch cleanup and inspection
 
 - `gb`: list local branches sorted by most recent commit
 - `gd`: delete a merged local branch
-- `gD`: force-delete a local branch
+- `gd!`: force-delete a local branch
 - `gc`: prune remote-tracking refs and delete gone branches only when already merged into the default branch
     - runs `git fetch -p` first
     - finds local branches whose upstream is marked `[gone]`
@@ -45,19 +48,20 @@ source /Some-Directory/fish-git-alias/config.fish
 ### Reset helper
 
 `gz` resets `HEAD` by commit count and defaults to a soft reset of one commit.
+`gz!` hard-resets `HEAD` by commit count and defaults to one commit.
 
 Examples:
 
 ```fish
 gz
 gz 2
-gz --hard
-gz --hard 3
+gz!
+gz! 3
 ```
 
 Behavior:
 
 - default: `git reset --soft HEAD~1`
 - `gz 3`: reset three commits
-- `gz --hard 2`: hard-reset two commits
-- invalid counts and conflicting flags are rejected
+- `gz! 2`: hard-reset two commits
+- invalid counts are rejected

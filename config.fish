@@ -27,26 +27,25 @@ if status is-interactive
     # Fetch from upstream and rebase the current branch onto upstream.
     abbr -a gru 'git fetch upstream && git rebase upstream'
 
-    # Force-push safely with lease protection.
-    abbr -a gf 'git push --force-with-lease'
+    # Pull the latest changes into the current branch.
+    abbr -a gl 'git pull'
+
+    # Pull the latest changes into the current branch with rebase.
+    abbr -a glr 'git pull --rebase'
 
     # Push the current branch to its configured remote.
     abbr -a gp 'git push'
 
+    # Push the current branch and set origin upstream.
+    abbr -a gpu 'git push --set-upstream origin (git branch --show-current)'
+
+    # Force-push safely with lease protection.
+    abbr -a gp! 'git push --force-with-lease'
+
     # Reset the current branch by commit count, defaulting to a soft reset of one commit.
     function gz
-        argparse 'h/hard' 's/soft' -- $argv
+        argparse 's/soft' -- $argv
         or return
-
-        if set -q _flag_hard; and set -q _flag_soft
-            echo 'gz: choose either --hard or --soft' >&2
-            return 1
-        end
-
-        set -l reset_mode soft
-        if set -q _flag_hard
-            set reset_mode hard
-        end
 
         set -l count 1
         if test (count $argv) -gt 0
@@ -58,7 +57,22 @@ if status is-interactive
             return 1
         end
 
-        git reset --$reset_mode HEAD~$count
+        git reset --soft HEAD~$count
+    end
+
+    # Hard reset the current branch by commit count, defaulting to one commit.
+    function gz!
+        set -l count 1
+        if test (count $argv) -gt 0
+            set count $argv[1]
+        end
+
+        if not string match -qr '^[1-9][0-9]*$' -- $count
+            echo 'gz!: commit count must be a positive integer' >&2
+            return 1
+        end
+
+        git reset --hard HEAD~$count
     end
 
     # List local branches sorted by most recent commit.
@@ -68,7 +82,7 @@ if status is-interactive
     abbr -a gd 'git branch -d'
 
     # Force-delete a local branch.
-    abbr -a gD 'git branch -D'
+    abbr -a gd! 'git branch -D'
 
     # Remove local branches whose upstream is gone, deleting unmerged branches only with --force.
     function gc
