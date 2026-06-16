@@ -78,6 +78,9 @@ if status is-interactive
     # List local branches sorted by most recent commit.
     abbr -a gb 'git for-each-ref --sort=-committerdate --format="%(refname:short) | %(committerdate:relative) | %(authorname)" refs/heads'
 
+    # Compare the tracked upstream branch with the current branch.
+    abbr -a gt 'git log --left-right --cherry-pick --oneline @{u}...HEAD'
+
     # Delete a fully merged local branch.
     abbr -a gd 'git branch -d'
 

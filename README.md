@@ -35,6 +35,7 @@ source /Some-Directory/fish-git-alias/config.fish
 ### Branch cleanup and inspection
 
 - `gb`: list local branches sorted by most recent commit
+- `gt`: compare the tracked upstream branch with the current branch
 - `gd`: delete a merged local branch
 - `gd!`: force-delete a local branch
 - `gc`: prune remote-tracking refs and delete gone branches only when already merged into the default branch
