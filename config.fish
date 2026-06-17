@@ -78,8 +78,46 @@ if status is-interactive
     # List local branches sorted by most recent commit.
     abbr -a gb 'git for-each-ref --sort=-committerdate --format="%(refname:short) | %(committerdate:relative) | %(authorname)" refs/heads'
 
-    # Compare the tracked upstream branch with the current branch.
-    abbr -a gt 'git log --left-right --cherry-pick --oneline @{u}...HEAD'
+    # Compare the current branch with the default branch and tracked upstream.
+    function gt
+        set -l default_branch (git_default_branch)
+        if test -z "$default_branch"
+            echo 'gt: could not resolve the default branch from origin/HEAD' >&2
+            return 1
+        end
+
+        set -l default_ref origin/$default_branch
+        set -l upstream (git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null)
+        set -l upstream_status $status
+
+        set -l default_counts (git rev-list --left-right --count "$default_ref...HEAD" | string split \t)
+        or return
+
+        echo "== current vs $default_ref ($default_counts[1] behind, $default_counts[2] ahead) =="
+        if test $default_counts[1] -eq 0 -a $default_counts[2] -eq 0
+            echo 'No commit differences.'
+        else
+            git log --left-right --cherry-pick --oneline --stat "$default_ref...HEAD"
+            or return
+        end
+
+        echo
+        if test $upstream_status -ne 0 -o -z "$upstream"
+            echo '== current vs tracked upstream =='
+            echo 'gt: no tracked upstream for current branch' >&2
+            return 0
+        end
+
+        set -l upstream_counts (git rev-list --left-right --count "$upstream...HEAD" | string split \t)
+        or return
+
+        echo "== current vs $upstream ($upstream_counts[1] behind, $upstream_counts[2] ahead) =="
+        if test $upstream_counts[1] -eq 0 -a $upstream_counts[2] -eq 0
+            echo 'No commit differences.'
+        else
+            git log --left-right --cherry-pick --oneline --stat "$upstream...HEAD"
+        end
+    end
 
     # Delete a fully merged local branch.
     abbr -a gd 'git branch -d'
