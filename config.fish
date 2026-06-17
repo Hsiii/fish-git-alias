@@ -173,6 +173,9 @@ if status is-interactive
     # Cherry-pick one or more commits onto the current branch.
     abbr -a gcp 'git cherry-pick'
 
+    # Show a commit with its file summary and patch.
+    abbr -a gs 'git show --stat --patch'
+
     # Show repository status.
     abbr -a gst 'git status'
 

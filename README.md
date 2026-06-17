@@ -44,6 +44,7 @@ source /Some-Directory/fish-git-alias/config.fish
     - deletes merged branches with `git branch -d`
     - skips unmerged branches unless you pass `--force`
     - never deletes the current branch
+- `gs`: show a commit with its file summary and patch
 - `gst`: show `git status`
 
 ### Reset helper
