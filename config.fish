@@ -4,9 +4,14 @@ if status is-interactive
         # Silence the greeting.
     end
 
-    # Resolve the remote default branch name from origin/HEAD.
+    # Resolve the remote default branch name from the remote HEAD.
     function git_default_branch
-        git symbolic-ref refs/remotes/origin/HEAD | string replace 'refs/remotes/origin/' ''
+        set -l remote origin
+        if test (count $argv) -gt 0
+            set remote $argv[1]
+        end
+
+        git symbolic-ref refs/remotes/$remote/HEAD | string replace "refs/remotes/$remote/" ''
     end
 
     # Switch to the remote default branch and pull the latest changes.
@@ -24,8 +29,8 @@ if status is-interactive
     # Fetch remote changes and rebase the current branch onto origin's default branch.
     abbr -a gr 'git fetch && git rebase origin/(git_default_branch)'
 
-    # Fetch from upstream and rebase the current branch onto upstream.
-    abbr -a gru 'git fetch upstream && git rebase upstream'
+    # Fetch from upstream and rebase the current branch onto upstream's default branch.
+    abbr -a gru 'git fetch upstream && git rebase upstream/(git_default_branch upstream)'
 
     # Pull the latest changes into the current branch.
     abbr -a gl 'git pull'
