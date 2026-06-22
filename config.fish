@@ -187,6 +187,4 @@ if status is-interactive
     # Open GitHub PR creation in the browser with a branch-based title.
     abbr -a pr 'gh pr create --title (git branch --show-current | sed "s|/|: |g; s|-| |g") --web'
 
-    # Open the local Fish config in VS Code.
-    abbr -a cf 'code ~/.config/fish/config.fish'
 end
