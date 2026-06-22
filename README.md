@@ -1,10 +1,12 @@
 # fish-git-alias
 
-A opinionated [Fish](https://fishshell.com/) config that adds Git-focused abbreviations and helper functions for interactive shell use.
+An opinionated [Fish](https://fishshell.com/) config that adds Git-focused abbreviations and helper functions for interactive shell use.
+
+This repo is a public mirror of my dotfiles-local Git alias config. On my machine, `config.fish` is a symlink to `/Users/hsi/.config/fish/git-aliases.fish`.
 
 ## Combine with your own config
 
-Clone the repo somewhere stable, then source the config from your local Fish config:
+Source the config from your local Fish config:
 
 ```fish
 source /Some-Directory/fish-git-alias/config.fish
