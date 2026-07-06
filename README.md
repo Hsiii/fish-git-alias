@@ -2,7 +2,7 @@
 
 An opinionated [Fish](https://fishshell.com/) config that adds Git-focused abbreviations and helper functions for interactive shell use.
 
-This repo is a public mirror of my dotfiles-local Git alias config. On my machine, `config.fish` is a symlink to `/Users/hsi/.config/fish/git-aliases.fish`.
+This repo owns my Git alias config. On my machine, `/Users/hsi/.config/fish/git-aliases.fish` is a symlink to this repo's `config.fish`.
 
 ## Combine with your own config
 
