@@ -46,10 +46,6 @@ source /Some-Directory/fish-git-alias/config.fish
     - deletes merged branches with `git branch -d`
     - skips unmerged branches unless you pass `--force`
     - never deletes the current branch
-- `detree`: remove every Codex worktree registered to the current repository
-    - only targets worktrees inside Codex's worktree directory
-    - preserves dirty worktrees by default
-    - pass `--force` to remove dirty worktrees too
 - `gs`: show a commit with its file summary and patch
 - `gst`: show `git status`
 
